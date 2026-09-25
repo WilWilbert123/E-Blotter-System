@@ -1,3 +1,13 @@
+const fs = require('fs');
+const path = require('path');
+
+const write = (p, content) => {
+  const full = path.join(__dirname, p);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, content.trim() + '\\n');
+};
+
+write('src/components/users/user-table.tsx', `
 'use client';
 import React, { useEffect, useState } from 'react';
 import { getDb } from '@/lib/database';
@@ -49,7 +59,7 @@ export function UserTable() {
                 {u.barangay_users?.[0]?.barangays?.name || 'N/A'}
               </td>
               <td className="p-4 text-sm text-right">
-                <a href={`/police/admin/users/${u.id}`} className="text-blue-600 hover:underline">Manage</a>
+                <a href={\`/police/admin/users/\${u.id}\`} className="text-blue-600 hover:underline">Manage</a>
               </td>
             </tr>
           ))}
@@ -60,4 +70,30 @@ export function UserTable() {
       </table>
     </div>
   );
-}\n
+}
+`);
+
+write('src/app/police/admin/users/page.tsx', `
+import { UserTable } from '@/components/users/user-table';
+import { getCurrentUser } from '@/lib/database/auth-queries';
+import { redirect } from 'next/navigation';
+
+export default async function PoliceUsersPage() {
+  const user = await getCurrentUser();
+  if (!user || user.role !== 'POLICE_SUPER_ADMIN') redirect('/unauthorized');
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Manage System Users</h1>
+        <a href="/police/admin/users/new" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-medium">
+          + Create User
+        </a>
+      </div>
+      <UserTable />
+    </div>
+  );
+}
+`);
+
+console.log('Built remaining core tables.');

@@ -1,10 +1,10 @@
-import React from 'react';
+import { BlotterForm } from '@/components/blotter/blotter-form';
 
-export default function NewPage() {
+export default function BarangayNewBlotterPage() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">NewPage</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">File New Blotter Record</h1>
+      <BlotterForm />
     </div>
   );
-}
+}\n

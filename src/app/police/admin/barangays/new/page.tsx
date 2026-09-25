@@ -1,10 +1,15 @@
-import React from 'react';
+import { BarangayForm } from '@/components/barangays/barangay-form';
+import { getCurrentUser } from '@/lib/database/auth-queries';
+import { redirect } from 'next/navigation';
 
-export default function NewPage() {
+export default async function PoliceNewBarangayPage() {
+  const user = await getCurrentUser();
+  if (!user || user.role !== 'POLICE_SUPER_ADMIN') redirect('/unauthorized');
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">NewPage</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Add New Barangay</h1>
+      <BarangayForm />
     </div>
   );
-}
+}\n
