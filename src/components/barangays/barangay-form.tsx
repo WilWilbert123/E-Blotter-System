@@ -57,4 +57,4 @@ export function BarangayForm() {
       </button>
     </form>
   );
-}\n
+}

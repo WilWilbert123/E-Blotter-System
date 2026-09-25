@@ -15,4 +15,4 @@ export async function generateBlotterReport(startDate: string, endDate: string) 
 
   if (error) throw new Error(error.message);
   return data;
-}\n
+}

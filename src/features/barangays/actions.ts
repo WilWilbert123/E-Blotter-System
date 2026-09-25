@@ -24,4 +24,4 @@ export async function getBarangays() {
   
   if (error) throw new Error(error.message);
   return data;
-}\n
+}

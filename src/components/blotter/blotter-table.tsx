@@ -48,4 +48,4 @@ export function BlotterTable({ cases }: { cases: BlotterCase[] }) {
       </table>
     </div>
   );
-}\n
+}

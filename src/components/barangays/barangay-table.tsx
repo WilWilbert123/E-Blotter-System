@@ -68,4 +68,4 @@ export function BarangayTable() {
       </table>
     </div>
   );
-}\n
+}

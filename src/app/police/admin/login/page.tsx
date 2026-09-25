@@ -6,4 +6,4 @@ export default function PoliceLoginPage() {
       <LoginForm role="police" />
     </div>
   );
-}\n
+}

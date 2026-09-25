@@ -8,4 +8,4 @@ export interface UserSession {
   firstName: string;
   lastName: string;
   mustChangePassword?: boolean;
-}\n
+}

@@ -12,4 +12,4 @@ export async function exportToCsv(data: any[], filename: string) {
 
   await logAudit({ action: 'CSV_EXPORT', entity_type: 'REPORT' });
   return csv;
-}\n
+}

@@ -13,4 +13,4 @@ export default async function PoliceAuditLogsPage() {
       <AuditTable />
     </div>
   );
-}\n
+}

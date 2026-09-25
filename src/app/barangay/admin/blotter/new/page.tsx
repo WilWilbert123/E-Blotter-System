@@ -7,4 +7,4 @@ export default function BarangayNewBlotterPage() {
       <BlotterForm />
     </div>
   );
-}\n
+}

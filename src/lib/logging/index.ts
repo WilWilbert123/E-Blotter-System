@@ -4,4 +4,4 @@ export function logInfo(message: string, meta?: any) {
 
 export function logError(message: string, error?: any) {
   console.error(JSON.stringify({ level: 'ERROR', timestamp: new Date(), message, error }));
-}\n
+}

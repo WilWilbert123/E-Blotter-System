@@ -12,4 +12,4 @@ export default async function PoliceNewBarangayPage() {
       <BarangayForm />
     </div>
   );
-}\n
+}

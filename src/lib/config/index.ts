@@ -3,4 +3,4 @@ export const APP_CONFIG = {
   region: 'Irosin, Sorsogon',
   maxUploadSizeMb: 10,
   defaultPaginationLimit: 20
-};\n
+};

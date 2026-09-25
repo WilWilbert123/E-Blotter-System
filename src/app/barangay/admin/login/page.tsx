@@ -6,4 +6,4 @@ export default function BarangayLoginPage() {
       <LoginForm role="barangay" />
     </div>
   );
-}\n
+}

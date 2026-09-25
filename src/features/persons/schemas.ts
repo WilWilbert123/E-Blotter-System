@@ -9,4 +9,4 @@ export const personSchema = z.object({
   contact_information: z.string().optional(),
 });
 
-export type PersonInput = z.infer<typeof personSchema>;\n
+export type PersonInput = z.infer<typeof personSchema>; 

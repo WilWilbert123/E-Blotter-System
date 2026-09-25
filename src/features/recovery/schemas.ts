@@ -5,4 +5,4 @@ export const recoveryRequestSchema = z.object({
   reason: z.string().min(5, 'Reason for recovery is required')
 });
 
-export type RecoveryRequestInput = z.infer<typeof recoveryRequestSchema>;\n
+export type RecoveryRequestInput = z.infer<typeof recoveryRequestSchema>;

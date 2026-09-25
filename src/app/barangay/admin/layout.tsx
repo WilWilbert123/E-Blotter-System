@@ -30,4 +30,4 @@ export default async function BarangayLayout({ children }: { children: React.Rea
       </main>
     </div>
   );
-}\n
+}

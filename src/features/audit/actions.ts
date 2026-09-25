@@ -30,4 +30,4 @@ export async function getAuditLogs(limit = 50) {
     
   if (error) throw new Error(error.message);
   return data;
-}\n
+}

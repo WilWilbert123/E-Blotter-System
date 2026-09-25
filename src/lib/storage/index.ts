@@ -8,4 +8,4 @@ export async function uploadEvidence(file: File, caseId: string) {
   if (error) throw error;
   
   return data.path;
-}\n
+}

@@ -9,4 +9,4 @@ export const barangaySchema = z.object({
   logo_url: z.string().optional(),
 });
 
-export type BarangayInput = z.infer<typeof barangaySchema>;\n
+export type BarangayInput = z.infer<typeof barangaySchema>;

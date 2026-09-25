@@ -16,4 +16,4 @@ export function checkRateLimit(ip: string, limit: number, windowMs: number): boo
   
   record.count++;
   return true;
-}\n
+}

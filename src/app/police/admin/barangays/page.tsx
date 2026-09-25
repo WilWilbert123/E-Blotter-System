@@ -17,4 +17,4 @@ export default async function PoliceBarangaysPage() {
       <BarangayTable />
     </div>
   );
-}\n
+}

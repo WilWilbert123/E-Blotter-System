@@ -13,4 +13,4 @@ export const blotterSchema = z.object({
   remarks: z.string().optional(),
 });
 
-export type BlotterInput = z.infer<typeof blotterSchema>;\n
+export type BlotterInput = z.infer<typeof blotterSchema>;

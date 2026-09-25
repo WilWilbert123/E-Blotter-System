@@ -34,4 +34,4 @@ export async function initiateTransfer(data: TransferInput) {
   });
 
   return { success: true, transfer: newTransfer };
-}\n
+}

@@ -69,4 +69,4 @@ export default function ChangePasswordPage() {
       </button>
     </form>
   );
-}\n
+}

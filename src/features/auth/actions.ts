@@ -49,4 +49,4 @@ export async function logoutAction() {
   const supabase = createClient();
   await supabase.auth.signOut();
   redirect('/barangay/admin/login');
-}\n
+}

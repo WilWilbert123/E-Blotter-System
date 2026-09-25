@@ -60,4 +60,4 @@ export function UserTable() {
       </table>
     </div>
   );
-}\n
+}

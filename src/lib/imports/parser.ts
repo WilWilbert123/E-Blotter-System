@@ -10,4 +10,4 @@ export function parseCSV(content: string) {
       return obj;
     }, {} as any);
   });
-}\n
+}

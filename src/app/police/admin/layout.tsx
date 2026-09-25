@@ -30,4 +30,4 @@ export default async function PoliceLayout({ children }: { children: React.React
       </main>
     </div>
   );
-}\n
+}

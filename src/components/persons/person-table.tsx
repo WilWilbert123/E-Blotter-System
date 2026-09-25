@@ -41,4 +41,4 @@ export function PersonTable({ persons }: { persons: Person[] }) {
       </table>
     </div>
   );
-}\n
+}

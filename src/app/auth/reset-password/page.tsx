@@ -43,4 +43,4 @@ export default function ResetPasswordPage() {
       </button>
     </form>
   );
-}\n
+}

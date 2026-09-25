@@ -21,4 +21,4 @@ export default async function BarangayBlotterPage() {
       <BlotterTable cases={cases || []} />
     </div>
   );
-}\n
+}

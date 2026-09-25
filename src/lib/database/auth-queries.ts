@@ -35,4 +35,4 @@ export async function requireAuth(allowedRoles?: AppRole[]): Promise<UserSession
   }
   
   return user;
-}\n
+}

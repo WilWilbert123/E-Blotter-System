@@ -45,4 +45,4 @@ export function LoginForm({ role }: { role: 'police' | 'barangay' }) {
       </button>
     </form>
   );
-}\n
+}

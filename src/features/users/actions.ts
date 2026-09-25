@@ -60,4 +60,4 @@ export async function createUser(data: UserCreateInput) {
   });
 
   return { success: true };
-}\n
+}

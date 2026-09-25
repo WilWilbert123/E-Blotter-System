@@ -22,4 +22,4 @@ export async function createBlotter(data: BlotterInput) {
   
   if (error) return { error: error.message };
   return { success: true };
-}\n
+}

@@ -6,4 +6,4 @@ export const transferSchema = z.object({
   reason: z.string().min(5),
 });
 
-export type TransferInput = z.infer<typeof transferSchema>;\n
+export type TransferInput = z.infer<typeof transferSchema>;

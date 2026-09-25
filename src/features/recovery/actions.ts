@@ -27,4 +27,4 @@ export async function requestRecovery(username: string, reason: string) {
   });
 
   return { success: true };
-}\n
+}

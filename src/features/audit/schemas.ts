@@ -10,4 +10,4 @@ export const auditSchema = z.object({
   failure_reason: z.string().optional()
 });
 
-export type AuditInput = z.infer<typeof auditSchema>;\n
+export type AuditInput = z.infer<typeof auditSchema>;

@@ -57,4 +57,4 @@ export function AuditTable() {
       </table>
     </div>
   );
-}\n
+}

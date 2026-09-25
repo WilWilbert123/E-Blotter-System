@@ -3,4 +3,4 @@ export function formatCurrency(amount: number) {
 }
 export function formatDate(dateString: string) {
   return new Intl.DateTimeFormat('en-PH', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(dateString));
-}\n
+}

@@ -78,4 +78,4 @@ export function BlotterForm() {
       </button>
     </form>
   );
-}\n
+}
