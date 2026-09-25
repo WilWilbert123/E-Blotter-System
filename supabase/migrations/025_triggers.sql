@@ -1,11 +1,12 @@
--- Update timestamps trigger
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-   NEW.updated_at = NOW();
-   RETURN NEW;
-END;
-$$ language 'plpgsql';
+-- Drop existing triggers to avoid conflicts
+DROP TRIGGER IF EXISTS trigger_blotter_audit ON blotter_cases;
+DROP TRIGGER IF EXISTS trigger_person_audit ON persons;
 
-CREATE TRIGGER update_persons_modtime BEFORE UPDATE ON persons FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
-CREATE TRIGGER update_blotter_cases_modtime BEFORE UPDATE ON blotter_cases FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();\n
+-- Create triggers
+CREATE TRIGGER trigger_blotter_audit
+AFTER INSERT OR UPDATE OR DELETE ON blotter_cases
+FOR EACH ROW EXECUTE FUNCTION audit_action();
+
+CREATE TRIGGER trigger_person_audit
+AFTER INSERT OR UPDATE OR DELETE ON persons
+FOR EACH ROW EXECUTE FUNCTION audit_action();

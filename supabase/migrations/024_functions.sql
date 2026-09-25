@@ -1,13 +1,15 @@
--- Utility functions for security and RLS checks
-CREATE OR REPLACE FUNCTION auth_user_role() RETURNS text AS $$
-  SELECT roles.name 
-  FROM user_profiles 
-  JOIN roles ON user_profiles.role_id = roles.id 
-  WHERE user_profiles.id = auth.uid();
-$$ LANGUAGE sql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION auth_user_barangay() RETURNS uuid AS $$
-  SELECT barangay_id 
-  FROM barangay_users 
-  WHERE user_id = auth.uid() LIMIT 1;
-$$ LANGUAGE sql SECURITY DEFINER;\n
+-- Function to automatically log actions
+CREATE OR REPLACE FUNCTION audit_action()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO audit_logs (action, entity_type, entity_id, actor_id, new_data)
+    VALUES (
+        TG_OP,
+        TG_TABLE_NAME,
+        NEW.id,
+        auth.uid(),
+        row_to_json(NEW)::jsonb
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
