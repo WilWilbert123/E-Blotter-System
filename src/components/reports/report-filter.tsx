@@ -1,10 +1,18 @@
+'use client';
 import React from 'react';
+import { Card, CardContent, Input, Select, Button } from '@/components/ui';
 
-export default function ReportFilter() {
+export function ReportFilter() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">ReportFilter</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
-    </div>
+    <Card className="mb-6">
+      <CardContent className="py-4">
+        <div className="flex gap-4 items-end">
+          <Input type="date" label="Start Date" className="max-w-[200px]" />
+          <Input type="date" label="End Date" className="max-w-[200px]" />
+          <Select label="Status" options={[{label:'All', value:'ALL'}, {label:'Pending', value:'PENDING'}]} className="max-w-[200px]" />
+          <Button variant="outline">Apply Filters</Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

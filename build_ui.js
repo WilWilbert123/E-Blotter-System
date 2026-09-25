@@ -4,248 +4,254 @@ const path = require('path');
 const write = (p, content) => {
   const full = path.join(__dirname, p);
   fs.mkdirSync(path.dirname(full), { recursive: true });
-  fs.writeFileSync(full, content.trim() + '\\n');
+  fs.writeFileSync(full, content.trim() + '\n');
 };
 
 // ==========================================
-// APP PAGES - AUTH
+// UI PRIMITIVES
 // ==========================================
-write('src/components/auth/login-form.tsx', `
-'use client';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, LoginInput } from '@/features/auth/schemas';
-import { loginAction } from '@/features/auth/actions';
 
-export function LoginForm({ role }: { role: 'police' | 'barangay' }) {
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema)
-  });
+write('src/components/ui/button.tsx', `
+import React from 'react';
 
-  const onSubmit = async (data: LoginInput) => {
-    setIsLoading(true);
-    setError(null);
-    const result = await loginAction(data);
-    if (result?.error) {
-      setError(result.error);
-      setIsLoading(false);
-    }
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  isLoading?: boolean;
+}
+
+export function Button({ variant = 'primary', size = 'md', isLoading, children, className = '', ...props }: ButtonProps) {
+  const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none disabled:opacity-50';
+  const variants = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700',
+    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
+    outline: 'border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50',
+    danger: 'bg-red-600 text-white hover:bg-red-700',
+    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100'
+  };
+  const sizes = {
+    sm: 'h-8 px-3 text-xs',
+    md: 'h-10 px-4 text-sm',
+    lg: 'h-12 px-6 text-base'
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-sm mx-auto p-6 bg-white rounded shadow">
-      <h2 className="text-xl font-bold mb-4">{role === 'police' ? 'Police Admin Login' : 'Barangay Admin Login'}</h2>
-      {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-      
+    <button className={\`\${baseStyles} \${variants[variant]} \${sizes[size]} \${className}\`} disabled={isLoading || props.disabled} {...props}>
+      {isLoading ? <span className="mr-2 animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span> : null}
+      {children}
+    </button>
+  );
+}
+`);
+
+write('src/components/ui/input.tsx', `
+import React, { forwardRef } from 'react';
+
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, className = '', ...props }, ref) => {
+  return (
+    <div className="w-full">
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+      <input
+        ref={ref}
+        className={\`w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500 \${error ? 'border-red-500 focus:ring-red-500' : ''} \${className}\`}
+        {...props}
+      />
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+});
+Input.displayName = 'Input';
+`);
+
+write('src/components/ui/card.tsx', `
+import React from 'react';
+
+export function Card({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+  return <div className={\`bg-white rounded-lg shadow-sm border border-gray-200 \${className}\`}>{children}</div>;
+}
+
+export function CardHeader({ title, description, action }: { title: string, description?: string, action?: React.ReactNode }) {
+  return (
+    <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
       <div>
-        <label className="block text-sm font-medium">Username or Email</label>
-        <input {...register('username')} className="mt-1 block w-full border rounded p-2" />
-        {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
+        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
       </div>
+      {action && <div>{action}</div>}
+    </div>
+  );
+}
 
-      <div>
-        <label className="block text-sm font-medium">Password</label>
-        <input type="password" {...register('password')} className="mt-1 block w-full border rounded p-2" />
-        {errors.password && <span className="text-red-500 text-xs">{errors.password.message}</span>}
+export function CardContent({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+  return <div className={\`p-6 \${className}\`}>{children}</div>;
+}
+`);
+
+write('src/components/ui/table.tsx', `
+import React from 'react';
+
+export function Table({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200">{children}</table>
+    </div>
+  );
+}
+
+export function TableHeader({ children }: { children: React.ReactNode }) {
+  return <thead className="bg-gray-50">{children}</thead>;
+}
+
+export function TableBody({ children }: { children: React.ReactNode }) {
+  return <tbody className="bg-white divide-y divide-gray-200">{children}</tbody>;
+}
+
+export function TableRow({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+  return <tr className={\`hover:bg-gray-50 \${className}\`}>{children}</tr>;
+}
+
+export function TableHead({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+  return <th className={\`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider \${className}\`}>{children}</th>;
+}
+
+export function TableCell({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+  return <td className={\`px-6 py-4 whitespace-nowrap text-sm text-gray-900 \${className}\`}>{children}</td>;
+}
+`);
+
+write('src/components/ui/badge.tsx', `
+import React from 'react';
+
+type BadgeVariant = 'success' | 'warning' | 'error' | 'info' | 'default';
+
+export function Badge({ children, variant = 'default' }: { children: React.ReactNode, variant?: BadgeVariant }) {
+  const variants = {
+    success: 'bg-green-100 text-green-800',
+    warning: 'bg-yellow-100 text-yellow-800',
+    error: 'bg-red-100 text-red-800',
+    info: 'bg-blue-100 text-blue-800',
+    default: 'bg-gray-100 text-gray-800'
+  };
+  return (
+    <span className={\`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium \${variants[variant]}\`}>
+      {children}
+    </span>
+  );
+}
+`);
+
+write('src/components/ui/textarea.tsx', `
+import React, { forwardRef } from 'react';
+
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  error?: string;
+}
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({ label, error, className = '', ...props }, ref) => {
+  return (
+    <div className="w-full">
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+      <textarea
+        ref={ref}
+        className={\`w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500 \${error ? 'border-red-500 focus:ring-red-500' : ''} \${className}\`}
+        {...props}
+      />
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+});
+Textarea.displayName = 'Textarea';
+`);
+
+write('src/components/ui/select.tsx', `
+import React, { forwardRef } from 'react';
+
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  error?: string;
+  options: { label: string; value: string }[];
+}
+
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ label, error, options, className = '', ...props }, ref) => {
+  return (
+    <div className="w-full">
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+      <select
+        ref={ref}
+        className={\`w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 \${error ? 'border-red-500 focus:ring-red-500' : ''} \${className}\`}
+        {...props}
+      >
+        <option value="" disabled>Select an option</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+});
+Select.displayName = 'Select';
+`);
+
+write('src/components/ui/modal.tsx', `
+import React, { useEffect } from 'react';
+
+export function Modal({ isOpen, onClose, title, children }: { isOpen: boolean, onClose: () => void, title: string, children: React.ReactNode }) {
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'unset';
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center p-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-500">&times;</button>
+        </div>
+        <div className="p-4">{children}</div>
       </div>
-
-      <button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white rounded p-2 mt-4 hover:bg-blue-700 disabled:opacity-50">
-        {isLoading ? 'Logging in...' : 'Login'}
-      </button>
-    </form>
-  );
-}
-`);
-
-write('src/app/barangay/admin/login/page.tsx', `
-import { LoginForm } from '@/components/auth/login-form';
-
-export default function BarangayLoginPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <LoginForm role="barangay" />
     </div>
   );
 }
 `);
 
-write('src/app/police/admin/login/page.tsx', `
-import { LoginForm } from '@/components/auth/login-form';
-
-export default function PoliceLoginPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <LoginForm role="police" />
-    </div>
-  );
-}
-`);
-
-// ==========================================
-// GLOBALS CSS
-// ==========================================
-write('src/app/globals.css', `
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 245, 245, 245;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 10, 10, 10;
-    --background-end-rgb: 20, 20, 20;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  font-family: system-ui, -apple-system, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-/* Basic Tailwind-like classes for vanilla css since user rejected tailwind */
-.min-h-screen { min-height: 100vh; }
-.flex { display: flex; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.bg-gray-100 { background-color: #f3f4f6; }
-.bg-gray-900 { background-color: #111827; }
-.bg-white { background-color: #ffffff; color: #000; }
-.p-6 { padding: 1.5rem; }
-.rounded { border-radius: 0.25rem; }
-.shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
-.max-w-sm { max-width: 24rem; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-.w-full { width: 100%; }
-.mt-1 { margin-top: 0.25rem; }
-.mt-4 { margin-top: 1rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-4 { margin-bottom: 1rem; }
-.block { display: block; }
-.text-sm { font-size: 0.875rem; }
-.text-xs { font-size: 0.75rem; }
-.text-xl { font-size: 1.25rem; }
-.font-bold { font-weight: 700; }
-.font-medium { font-weight: 500; }
-.text-red-500 { color: #ef4444; }
-.text-white { color: #ffffff; }
-.bg-blue-600 { background-color: #2563eb; }
-.hover\\:bg-blue-700:hover { background-color: #1d4ed8; }
-.border { border: 1px solid #e5e7eb; }
-.p-2 { padding: 0.5rem; }
-.space-y-4 > :not([hidden]) ~ :not([hidden]) {
-  margin-top: 1rem;
-}
-`);
-
-// ==========================================
-// LAYOUTS
-// ==========================================
-write('src/app/layout.tsx', `
-import './globals.css';
+write('src/components/ui/skeleton.tsx', `
 import React from 'react';
 
-export const metadata = {
-  title: 'E-Blotter System',
-  description: 'Production-grade E-Blotter Management System',
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+export function Skeleton({ className = '' }: { className?: string }) {
+  return <div className={\`animate-pulse bg-gray-200 rounded \${className}\`} />;
 }
 `);
 
-write('src/app/barangay/admin/layout.tsx', `
-import { getCurrentUser } from '@/lib/database/auth-queries';
-import { redirect } from 'next/navigation';
+write('src/components/ui/alert.tsx', `
 import React from 'react';
 
-export default async function BarangayLayout({ children }: { children: React.ReactNode }) {
-  const user = await getCurrentUser();
-  
-  if (!user) {
-    redirect('/barangay/admin/login');
-  }
-
-  if (!['BARANGAY_CAPTAIN', 'BARANGAY_STAFF'].includes(user.role)) {
-    redirect('/unauthorized');
-  }
+export function Alert({ title, description, variant = 'info' }: { title: string, description?: string, variant?: 'info' | 'error' | 'success' | 'warning' }) {
+  const variants = {
+    info: 'bg-blue-50 text-blue-800 border-blue-200',
+    error: 'bg-red-50 text-red-800 border-red-200',
+    success: 'bg-green-50 text-green-800 border-green-200',
+    warning: 'bg-yellow-50 text-yellow-800 border-yellow-200'
+  };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <aside style={{ width: '250px', backgroundColor: '#1f2937', color: 'white', padding: '1rem' }}>
-        <h2>Barangay Panel</h2>
-        <nav style={{ marginTop: '2rem' }}>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-             <li style={{ marginBottom: '1rem' }}><a href="/barangay/admin/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</a></li>
-             <li style={{ marginBottom: '1rem' }}><a href="/barangay/admin/blotter" style={{ color: 'white', textDecoration: 'none' }}>Blotter Records</a></li>
-             <li style={{ marginBottom: '1rem' }}><a href="/barangay/admin/persons" style={{ color: 'white', textDecoration: 'none' }}>Persons</a></li>
-          </ul>
-        </nav>
-      </aside>
-      <main style={{ flex: 1, padding: '2rem', backgroundColor: '#f3f4f6' }}>
-        {children}
-      </main>
+    <div className={\`p-4 rounded-md border \${variants[variant]} mb-4\`}>
+      <h4 className="text-sm font-medium">{title}</h4>
+      {description && <p className="mt-1 text-sm opacity-90">{description}</p>}
     </div>
   );
 }
 `);
 
-write('src/app/police/admin/layout.tsx', `
-import { getCurrentUser } from '@/lib/database/auth-queries';
-import { redirect } from 'next/navigation';
-import React from 'react';
-
-export default async function PoliceLayout({ children }: { children: React.ReactNode }) {
-  const user = await getCurrentUser();
-  
-  if (!user) {
-    redirect('/police/admin/login');
-  }
-
-  if (!['POLICE_SUPER_ADMIN', 'POLICE_OFFICER'].includes(user.role)) {
-    redirect('/unauthorized');
-  }
-
-  return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <aside style={{ width: '250px', backgroundColor: '#111827', color: 'white', padding: '1rem' }}>
-        <h2>Police HQ</h2>
-        <nav style={{ marginTop: '2rem' }}>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-             <li style={{ marginBottom: '1rem' }}><a href="/police/admin/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</a></li>
-             <li style={{ marginBottom: '1rem' }}><a href="/police/admin/blotter" style={{ color: 'white', textDecoration: 'none' }}>All Blotters</a></li>
-             <li style={{ marginBottom: '1rem' }}><a href="/police/admin/barangays" style={{ color: 'white', textDecoration: 'none' }}>Manage Barangays</a></li>
-          </ul>
-        </nav>
-      </aside>
-      <main style={{ flex: 1, padding: '2rem', backgroundColor: '#f9fafb' }}>
-        {children}
-      </main>
-    </div>
-  );
-}
-`);
-
-console.log('Built UI layouts and globals.');
+console.log('Built core UI primitives.');

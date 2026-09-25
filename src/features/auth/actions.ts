@@ -35,7 +35,8 @@ export async function loginAction(data: LoginInput) {
       .eq('id', user.id)
       .single();
       
-     if (profile?.roles?.name?.startsWith('POLICE')) {
+     const roleName = Array.isArray(profile?.roles) ? (profile?.roles as any)[0]?.name : (profile?.roles as any)?.name;
+     if (roleName?.startsWith('POLICE')) {
         redirect('/police/admin/dashboard');
      } else {
         redirect('/barangay/admin/dashboard');

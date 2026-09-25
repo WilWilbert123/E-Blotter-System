@@ -10,6 +10,6 @@ export async function exportToCsv(data: any[], filename: string) {
   const rows = data.map(row => Object.values(row).map(val => `"${val}"`).join(','));
   const csv = [headers, ...rows].join('\n');
 
-  await logAudit({ action: 'CSV_EXPORT', entity_type: 'REPORT' });
+  await logAudit({ action: 'CSV_EXPORT', success: true, entity_type: 'REPORT' });
   return csv;
 }

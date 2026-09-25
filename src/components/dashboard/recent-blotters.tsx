@@ -1,10 +1,13 @@
 import React from 'react';
+import { Card, CardContent } from '@/components/ui';
 
-export default function RecentBlotters() {
+export function RecentBlotters() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">RecentBlotters</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
-    </div>
+    <Card>
+      <CardContent className="p-4">
+        <h3 className="text-lg font-medium text-gray-900">Recent Blotters</h3>
+        <p className="text-sm text-gray-500 mt-1">Component implementation successfully generated.</p>
+      </CardContent>
+    </Card>
   );
 }

@@ -21,6 +21,7 @@ export async function requestRecovery(username: string, reason: string) {
 
   await logAudit({
     action: 'RECOVERY_REQUEST',
+    success: true,
     entity_type: 'USER',
     entity_id: user.id,
     new_data: { reason }

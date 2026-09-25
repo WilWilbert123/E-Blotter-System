@@ -1,10 +1,27 @@
 import React from 'react';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, Badge, Button } from '@/components/ui';
 
-export default function RecoveryRequestTable() {
+export function RecoveryRequestTable() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">RecoveryRequestTable</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>User</TableHead>
+          <TableHead>Reason</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>jdelacruz</TableCell>
+          <TableCell>Forgot password, locked out.</TableCell>
+          <TableCell><Badge variant="warning">Pending</Badge></TableCell>
+          <TableCell>Oct 26, 2024</TableCell>
+          <TableCell><Button size="sm">Review</Button></TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   );
 }

@@ -1,10 +1,23 @@
 import React from 'react';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, Badge } from '@/components/ui';
 
-export default function LoginHistoryTable() {
+export function LoginHistoryTable() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">LoginHistoryTable</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Date & Time</TableHead>
+          <TableHead>IP Address</TableHead>
+          <TableHead>Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>2024-10-26 10:30 AM</TableCell>
+          <TableCell>192.168.1.100</TableCell>
+          <TableCell><Badge variant="success">Success</Badge></TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   );
 }

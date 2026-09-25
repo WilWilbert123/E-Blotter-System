@@ -1,10 +1,15 @@
 import React from 'react';
+import { Card, CardHeader, CardContent } from '@/components/ui';
 
-export default function TransferChart() {
+export function TransferChart() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">TransferChart</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
-    </div>
+    <Card>
+      <CardHeader title="Transfer Chart" />
+      <CardContent>
+        <div className="h-48 w-full bg-gray-50 flex items-center justify-center border border-dashed border-gray-200 rounded text-sm text-gray-500">
+          Data Visualization Area
+        </div>
+      </CardContent>
+    </Card>
   );
 }

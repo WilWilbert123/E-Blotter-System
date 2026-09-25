@@ -54,6 +54,7 @@ export async function createUser(data: UserCreateInput) {
 
   await logAudit({
     action: 'CREATE',
+    success: true,
     entity_type: 'USER',
     entity_id: authData.user.id,
     new_data: { username: parsed.data.username, role: parsed.data.role }

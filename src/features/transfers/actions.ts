@@ -28,6 +28,7 @@ export async function initiateTransfer(data: TransferInput) {
 
   await logAudit({
     action: 'TRANSFER',
+    success: true,
     entity_type: 'PERSON_TRANSFER',
     entity_id: newTransfer.id,
     new_data: newTransfer

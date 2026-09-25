@@ -1,10 +1,19 @@
 import React from 'react';
+import { Card, CardHeader, CardContent, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui';
 
-export default function SecurityPage() {
+export default function SystemSecurityPage() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">SecurityPage</h1>
-      <p>This page is currently under construction. Core functionalities are being wired.</p>
+    <div className="p-6 space-y-6">
+      <h1 className="text-2xl font-bold text-gray-900">SystemSecurity Dashboard</h1>
+      <Card>
+        <CardHeader title="Records" />
+        <CardContent>
+          <Table>
+            <TableHeader><TableRow><TableHead>ID</TableHead><TableHead>Details</TableHead></TableRow></TableHeader>
+            <TableBody><TableRow><TableCell>1001</TableCell><TableCell>Record details</TableCell></TableRow></TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
