@@ -1,18 +1,28 @@
--- Enable RLS on all business tables
+-- Enable RLS
 ALTER TABLE barangays ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE persons ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blotter_cases ENABLE ROW LEVEL SECURITY;
-ALTER TABLE blotter_persons ENABLE ROW LEVEL SECURITY;
-ALTER TABLE blotter_actions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE blotter_attachments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE person_transfers ENABLE ROW LEVEL SECURITY;
-ALTER TABLE account_recovery ENABLE ROW LEVEL SECURITY;
-ALTER TABLE report_templates ENABLE ROW LEVEL SECURITY;
-ALTER TABLE report_exports ENABLE ROW LEVEL SECURITY;
-ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE persons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
--- Note: Proper RLS policies should check the authenticated user's role and barangay.
--- These are placeholders. Real policies will be complex and role-based.
-CREATE POLICY "Super admins can see all barangays" ON barangays FOR SELECT USING (true);
-CREATE POLICY "Users can see their own barangay" ON barangays FOR SELECT USING (true);\n
+-- Tenant Isolation for Blotter Cases
+CREATE POLICY "Barangay users can only see their own blotters"
+ON blotter_cases FOR SELECT
+USING (
+    barangay_id IN (
+        SELECT barangay_id FROM barangay_users WHERE user_id = auth.uid()
+    )
+    OR 
+    EXISTS (
+        SELECT 1 FROM user_profiles up
+        JOIN roles r ON up.role_id = r.id
+        WHERE up.id = auth.uid() AND r.name LIKE 'POLICE%'
+    )
+);
+
+CREATE POLICY "Barangay users can insert into their own barangay"
+ON blotter_cases FOR INSERT
+WITH CHECK (
+    barangay_id IN (
+        SELECT barangay_id FROM barangay_users WHERE user_id = auth.uid()
+    )
+);
