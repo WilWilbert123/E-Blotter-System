@@ -1,19 +1,30 @@
-import React from 'react';
-import { Card, CardHeader, CardContent, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui';
+'use client';
 
-export default function SrcAppPage() {
+import React from 'react';
+import { Card, CardHeader, CardContent } from '@/components/ui';
+
+export default function ErrorBoundary({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">SrcApp Dashboard</h1>
+    <div className="p-6 space-y-6 max-w-2xl mx-auto mt-10">
       <Card>
-        <CardHeader title="Records" />
+        <CardHeader title="Something went wrong!" />
         <CardContent>
-          <Table>
-            <TableHeader><TableRow><TableHead>ID</TableHead><TableHead>Details</TableHead></TableRow></TableHeader>
-            <TableBody><TableRow><TableCell>1001</TableCell><TableCell>Record details</TableCell></TableRow></TableBody>
-          </Table>
+          <p className="text-red-500 mb-4">{error?.message || 'An unexpected error occurred.'}</p>
+          <button
+            onClick={() => reset()}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Try again
+          </button>
         </CardContent>
       </Card>
     </div>
   );
 }
+
