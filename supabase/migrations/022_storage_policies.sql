@@ -1,0 +1,2 @@
+-- We assume storage schema exists in Supabase.
+-- Note: Replace with proper Supabase storage policies when deploying.\n
