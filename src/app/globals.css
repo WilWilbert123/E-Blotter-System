@@ -57,4 +57,4 @@ body {
 .p-2 { padding: 0.5rem; }
 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
   margin-top: 1rem;
-}\n
+}
