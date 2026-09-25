@@ -5,8 +5,8 @@ export const createClient = () => {
   const cookieStore = cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-anon-key-12345',
     {
       cookies: {
         get(name: string) {
@@ -37,8 +37,8 @@ export const createClient = () => {
 
 export const createAdminClient = () => {
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'mock-service-role-key-12345',
     {
       cookies: {
         get(name: string) {
