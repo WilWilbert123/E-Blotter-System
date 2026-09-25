@@ -1,1 +1,2 @@
-// TODO: Implement index.ts
+export * from './recovery-request-form';
+export * from './recovery-request-table';
